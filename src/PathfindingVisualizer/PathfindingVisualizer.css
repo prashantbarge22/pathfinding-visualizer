@@ -1,3 +1,56 @@
 .grid {
   margin: 100px 0 0;
 }
+
+.header h1 {
+  background: rgb(12, 53, 71);
+  color: #fff;
+  text-align: left;
+  padding: 30px;
+  padding-left: 100px;
+  margin: 0px;
+}
+
+.viz-btn {
+  position: absolute;
+  top: 20px;
+  left: 750px;
+  border: none;
+  background: rgba(0, 190, 218, 0.75);
+  color: #fff;
+  width: 130px;
+  height: 60px;
+  font-size: large;
+}
+
+.viz-btn:hover {
+  background: rgba(45, 220, 247, 0.75);
+}
+
+#algorithm-select {
+  position: absolute;
+  top: 40px;
+  left: 500px;
+  border: none;
+  background: rgb(12, 53, 71);
+  color: #fff;
+  font-size: large;
+}
+
+#algorithm-select:hover {
+  color: rgb(120, 231, 248);
+}
+
+.clear-btn {
+  position: absolute;
+  top: 40px;
+  right: 560px;
+  border: none;
+  background: rgb(12, 53, 71);
+  color: #fff;
+  font-size: large;
+}
+
+.clear-btn:hover {
+  color: rgb(120, 231, 248);
+}

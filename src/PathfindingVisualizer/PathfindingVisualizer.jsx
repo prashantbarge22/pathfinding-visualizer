@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Node from "./Node/Node";
 import "./PathfindingVisualizer.css";
-import Header from "./layout/Header";
+// import Header from "./layout/Header";
 import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
 
 const START_NODE_ROW = 10;
@@ -100,14 +100,59 @@ export default class PathfindingVisualizer extends Component {
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
+  resetNode(node) {
+    node.distance = Infinity;
+    node.isVisited = false;
+    node.isWall = false;
+    node.previousNode = null;
+  }
+
+  clearGrid() {
+    const { grid } = this.state;
+    for (let row of grid) {
+      for (let node of row) {
+        if (node.row === START_NODE_ROW && node.col === START_NODE_COL) {
+          document.getElementById(`node (${node.row},${node.col})`).className =
+            "node node-start";
+        } else if (
+          node.row === FINISH_NODE_ROW &&
+          node.col === FINISH_NODE_COL
+        ) {
+          document.getElementById(`node (${node.row},${node.col})`).className =
+            "node node-finish";
+        } else {
+          document.getElementById(`node (${node.row},${node.col})`).className =
+            "node ";
+        }
+        this.resetNode(node);
+      }
+    }
+  }
+
   render() {
     const { grid, mouseIsPressed } = this.state;
     return (
       <>
-        <Header />
-        <button style={btnStyle} onClick={() => this.visualizeDijkstra()}>
-          Visualize!
-        </button>
+        <div>
+          <header className="header">
+            <h1>Pathfinding Visualizer</h1>
+          </header>
+          <select id="algorithm-select">
+            <option value="" disabled selected>
+              Search Algorithms
+            </option>
+            <option value="dijkstra">Dijkstra's Algorithm</option>
+            <option value="a-star">A* Search</option>
+            <option value="dfs">Depth-first Search</option>
+            <option value="bfs">Breadth-first Search</option>
+          </select>
+          <button className="viz-btn" onClick={() => this.visualizeDijkstra()}>
+            Visualize!
+          </button>
+          <button className="clear-btn" onClick={() => this.clearGrid()}>
+            Clear Grid
+          </button>
+        </div>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
@@ -174,16 +219,4 @@ const createNewGridWithWallToggled = (grid, row, col) => {
   };
   newGrid[row][col] = newNode;
   return newGrid;
-};
-
-const btnStyle = {
-  position: "absolute",
-  top: "40px",
-  left: "750px",
-  border: "none",
-  background: "rgba(0, 190, 218, 0.75)",
-  color: "#fff",
-  width: "130px",
-  height: "60px",
-  fontSize: "large",
 };
