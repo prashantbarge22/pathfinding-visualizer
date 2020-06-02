@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Node from "./Node/Node";
 import "./PathfindingVisualizer.css";
+import Header from "./layout/Header";
 import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
 
 const START_NODE_ROW = 10;
@@ -103,7 +104,10 @@ export default class PathfindingVisualizer extends Component {
     const { grid, mouseIsPressed } = this.state;
     return (
       <>
-        <button onClick={() => this.visualizeDijkstra()}>Visualize!</button>
+        <Header />
+        <button style={btnStyle} onClick={() => this.visualizeDijkstra()}>
+          Visualize!
+        </button>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
@@ -170,4 +174,16 @@ const createNewGridWithWallToggled = (grid, row, col) => {
   };
   newGrid[row][col] = newNode;
   return newGrid;
+};
+
+const btnStyle = {
+  position: "absolute",
+  top: "40px",
+  left: "750px",
+  border: "none",
+  background: "rgba(0, 190, 218, 0.75)",
+  color: "#fff",
+  width: "130px",
+  height: "60px",
+  fontSize: "large",
 };
