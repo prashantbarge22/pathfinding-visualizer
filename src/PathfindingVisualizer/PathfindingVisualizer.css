@@ -1,5 +1,7 @@
 .grid {
-  margin: 100px 0 0;
+  position: absolute;
+  top: 240px;
+  width: 100%;
 }
 
 .header h1 {
@@ -11,11 +13,12 @@
   margin: 0px;
 }
 
-.viz-btn {
+#viz-btn {
   position: absolute;
   top: 20px;
-  left: 750px;
+  left: 740px;
   border: none;
+  border-radius: 5px;
   background: rgba(0, 190, 218, 0.75);
   color: #fff;
   width: 130px;
@@ -23,15 +26,23 @@
   font-size: large;
 }
 
-.viz-btn:hover {
+#viz-btn:hover {
   background: rgba(45, 220, 247, 0.75);
+}
+
+#algo-select-label {
+  position: absolute;
+  top: 22px;
+  left: 483px;
+  color: #fff;
+  font-size: large;
 }
 
 #algorithm-select {
   position: absolute;
-  top: 40px;
-  left: 500px;
-  border: none;
+  top: 55px;
+  left: 480px;
+  border-style: solid;
   background: rgb(12, 53, 71);
   color: #fff;
   font-size: large;
@@ -41,16 +52,87 @@
   color: rgb(120, 231, 248);
 }
 
-.clear-btn {
+#clear-btn {
   position: absolute;
   top: 40px;
-  right: 560px;
+  right: 600px;
   border: none;
   background: rgb(12, 53, 71);
   color: #fff;
   font-size: large;
 }
 
-.clear-btn:hover {
+#clear-btn:hover {
   color: rgb(120, 231, 248);
+}
+
+#instructions {
+  padding: 10px 180px;
+  text-align: left;
+  font-size: large;
+  /* display: none; */
+}
+
+#instr-btn {
+  position: absolute;
+  top: 40px;
+  right: 380px;
+  border: none;
+  background: rgb(12, 53, 71);
+  color: #fff;
+  font-size: large;
+}
+
+#instr-btn:hover {
+  color: rgb(120, 231, 248);
+}
+
+#dijkstra-desc {
+  position: absolute;
+  padding: 10px;
+  top: 170px;
+  right: 380px;
+  text-align: center;
+  font-size: large;
+  display: block;
+}
+
+#dfs-desc {
+  position: absolute;
+  padding: 10px;
+  top: 170px;
+  right: 380px;
+  text-align: center;
+  font-size: large;
+  display: none;
+}
+
+#bfs-desc {
+  position: absolute;
+  padding: 10px;
+  top: 170px;
+  right: 380px;
+  text-align: center;
+  font-size: large;
+  display: none;
+}
+
+#greedy-bfs-desc {
+  position: absolute;
+  padding: 10px;
+  top: 170px;
+  right: 380px;
+  text-align: center;
+  font-size: large;
+  display: none;
+}
+
+#a-star-desc {
+  position: absolute;
+  padding: 10px;
+  top: 170px;
+  right: 380px;
+  text-align: center;
+  font-size: large;
+  display: none;
 }

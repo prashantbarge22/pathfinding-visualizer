@@ -1,8 +1,14 @@
 import React, { Component } from "react";
 import Node from "./Node/Node";
 import "./PathfindingVisualizer.css";
-// import Header from "./layout/Header";
-import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
+import dijkstra from "../algorithms/dijkstra";
+import dfs from "../algorithms/dfs";
+import bfs from "../algorithms/bfs";
+import greedyBfs from "../algorithms/greedy-bfs";
+import getNodesInShortestPathOrder, {
+  manhattanDistance,
+} from "../algorithms/algorithmUtils";
+import aStar from "../algorithms/a-star";
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 10;
@@ -18,6 +24,7 @@ export default class PathfindingVisualizer extends Component {
     this.state = {
       grid: [],
       mouseIsPressed: false,
+      currentAlgorithm: "dijkstra", // default
     };
   }
 
@@ -41,6 +48,20 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ mouseIsPressed: false });
   }
 
+  toggleInputs(disable = false) {
+    const navbar = document.getElementById("navbar");
+    const buttons = navbar.getElementsByTagName("button");
+    if (disable === true) {
+      for (let button of buttons) {
+        button.disabled = true;
+      }
+    } else {
+      for (let button of buttons) {
+        button.disabled = false;
+      }
+    }
+  }
+
   animateShortestPath(nodesInShortestPathOrder) {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
@@ -54,17 +75,19 @@ export default class PathfindingVisualizer extends Component {
             document.getElementById(
               `node (${node.row},${node.col})`
             ).className = "node finish-node-shortest-path";
+            this.toggleInputs(false);
           } else {
             document.getElementById(
               `node (${node.row},${node.col})`
             ).className = "node node-shortest-path";
           }
         }
-      }, 50 * i);
+      }, 30 * i);
     }
   }
 
-  animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+  animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder) {
+    this.toggleInputs(true);
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -91,23 +114,106 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  visualizeDijkstra() {
+  visualizeDijkstra(grid, startNode, finishNode) {
+    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
+  visualizeDFS(grid, startNode, finishNode) {
+    const visitedNodesInOrder = dfs(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
+  visualizeBFS(grid, startNode, finishNode) {
+    const visitedNodesInOrder = bfs(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
+  visualizeGreedyBFS(grid, startNode, finishNode) {
+    const visitedNodesInOrder = greedyBfs(
+      grid,
+      startNode,
+      finishNode,
+      manhattanDistance
+    );
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
+  visualizeAStar(grid, startNode, finishNode) {
+    const visitedNodesInOrder = aStar(
+      grid,
+      startNode,
+      finishNode,
+      manhattanDistance
+    );
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
+  visualizeAlgorithm() {
+    this.clearGrid(true);
     const { grid } = this.state;
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    switch (this.state.currentAlgorithm) {
+      case "dijkstra":
+        this.visualizeDijkstra(grid, startNode, finishNode);
+        break;
+      case "dfs":
+        this.visualizeDFS(grid, startNode, finishNode);
+        break;
+      case "bfs":
+        this.visualizeBFS(grid, startNode, finishNode);
+        break;
+      case "greedy-bfs":
+        this.visualizeGreedyBFS(grid, startNode, finishNode);
+        break;
+      case "a-star":
+        this.visualizeAStar(grid, startNode, finishNode);
+        break;
+      default:
+    }
+    this.showAlgoDescription();
   }
 
-  resetNode(node) {
+  changeCurrentAlgo() {
+    const algorithmSelect = document.getElementById("algorithm-select");
+    const selectedAlgorithm =
+      algorithmSelect.options[algorithmSelect.selectedIndex].value;
+    switch (selectedAlgorithm) {
+      case "dijkstra":
+        this.setState({ currentAlgorithm: "dijkstra" });
+        break;
+      case "dfs":
+        this.setState({ currentAlgorithm: "dfs" });
+        break;
+      case "bfs":
+        this.setState({ currentAlgorithm: "bfs" });
+        break;
+      case "greedy-bfs":
+        this.setState({ currentAlgorithm: "greedy-bfs" });
+        break;
+      case "a-star":
+        this.setState({ currentAlgorithm: "a-star" });
+        break;
+      default:
+    }
+  }
+
+  resetNode(node, keepWall = false) {
     node.distance = Infinity;
     node.isVisited = false;
-    node.isWall = false;
     node.previousNode = null;
+    if (!keepWall) {
+      node.isWall = false;
+    }
   }
 
-  clearGrid() {
+  clearGrid(keepWall = false) {
     const { grid } = this.state;
     for (let row of grid) {
       for (let node of row) {
@@ -120,11 +226,37 @@ export default class PathfindingVisualizer extends Component {
         ) {
           document.getElementById(`node (${node.row},${node.col})`).className =
             "node node-finish";
+        } else if (node.isWall && keepWall) {
+          continue;
         } else {
           document.getElementById(`node (${node.row},${node.col})`).className =
             "node ";
         }
-        this.resetNode(node);
+        this.resetNode(node, keepWall);
+      }
+    }
+  }
+
+  toggleInstructions() {
+    const instr = document.getElementById("instructions");
+    if (instr.style.display === "none") {
+      instr.style.display = "block";
+    } else {
+      instr.style.display = "none";
+    }
+  }
+
+  showAlgoDescription() {
+    const { currentAlgorithm } = this.state;
+    const allDescs = document.getElementById("algo-desc");
+    const individualDescs = allDescs.getElementsByTagName("*");
+    const currAlgoID = `${currentAlgorithm}-desc`;
+    console.log(currentAlgorithm);
+    for (let i of individualDescs) {
+      if (i.id === currAlgoID) {
+        i.style.display = "block";
+      } else {
+        i.style.display = "none";
       }
     }
   }
@@ -133,26 +265,60 @@ export default class PathfindingVisualizer extends Component {
     const { grid, mouseIsPressed } = this.state;
     return (
       <>
-        <div>
+        <div id="navbar">
           <header className="header">
             <h1>Pathfinding Visualizer</h1>
           </header>
-          <select id="algorithm-select">
-            <option value="" disabled selected>
-              Search Algorithms
-            </option>
+          <label id="algo-select-label">Choose an algorithm:</label>
+          <select
+            id="algorithm-select"
+            onChange={() => this.changeCurrentAlgo()}
+          >
             <option value="dijkstra">Dijkstra's Algorithm</option>
-            <option value="a-star">A* Search</option>
             <option value="dfs">Depth-first Search</option>
             <option value="bfs">Breadth-first Search</option>
+            <option value="greedy-bfs">Greedy Best-first Search</option>
+            <option value="a-star">A* Search</option>
           </select>
-          <button className="viz-btn" onClick={() => this.visualizeDijkstra()}>
+          <button id="viz-btn" onClick={() => this.visualizeAlgorithm()}>
             Visualize!
           </button>
-          <button className="clear-btn" onClick={() => this.clearGrid()}>
+          <button id="clear-btn" onClick={() => this.clearGrid()}>
             Clear Grid
           </button>
+          <button id="instr-btn" onClick={() => this.toggleInstructions()}>
+            Show/Hide Instructions
+          </button>
         </div>
+        <p id="instructions">
+          Instructions: Choose an algorithm. Then, you can draw "walls" on the
+          grid by clicking and slowly dragging your mouse across the grid. Click
+          the button to visualize the algorithm and watch it navigate around
+          your walls to find the shortest path from the start node to the end
+          node.
+        </p>
+        <header id="algo-desc">
+          <h3 id="dijkstra-desc">
+            Dijkstra's algorithm is a weighted search algorithm that guarantees
+            the shortest path!
+          </h3>
+          <h3 id="dfs-desc">
+            Depth-first search is an weighted search algorithm that does not
+            guarantee the shortest path!
+          </h3>
+          <h3 id="bfs-desc">
+            Breadth-first search is an unweighted search algorithm that does not
+            guarantee the shortest path!
+          </h3>
+          <h3 id="greedy-bfs-desc">
+            Greedy best-first search is a weighted search algorithm that does
+            not guarantee the shortest path!
+          </h3>
+          <h3 id="a-star-desc">
+            A* search is a weighted search algorithm that guarantees the
+            shortest path!
+          </h3>
+        </header>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
