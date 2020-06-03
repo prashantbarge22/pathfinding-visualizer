@@ -251,7 +251,6 @@ export default class PathfindingVisualizer extends Component {
     const allDescs = document.getElementById("algo-desc");
     const individualDescs = allDescs.getElementsByTagName("*");
     const currAlgoID = `${currentAlgorithm}-desc`;
-    console.log(currentAlgorithm);
     for (let i of individualDescs) {
       if (i.id === currAlgoID) {
         i.style.display = "block";
@@ -307,8 +306,8 @@ export default class PathfindingVisualizer extends Component {
             guarantee the shortest path!
           </h3>
           <h3 id="bfs-desc">
-            Breadth-first search is an unweighted search algorithm that does not
-            guarantee the shortest path!
+            Breadth-first search is an unweighted search algorithm that
+            guarantees the shortest path!
           </h3>
           <h3 id="greedy-bfs-desc">
             Greedy best-first search is a weighted search algorithm that does
@@ -373,6 +372,9 @@ const createNode = (row, col) => {
     isVisited: false,
     isWall: false,
     previousNode: null,
+    g: 0,
+    h: 0,
+    f: 0,
   };
 };
 
@@ -386,3 +388,29 @@ const createNewGridWithWallToggled = (grid, row, col) => {
   newGrid[row][col] = newNode;
   return newGrid;
 };
+
+// const createNewGridWithStartNodeToggled = (grid, row, col) => {
+//   const newGrid = grid.slice();
+//   const node = newGrid[row][col];
+//   const newNode = {
+//     ...node,
+//     isStart: true,
+//   };
+//   newGrid[row][col] = newNode;
+//   START_NODE_ROW = row;
+//   START_NODE_COL = col;
+//   return newGrid;
+// };
+
+// const createNewGridWithFinishNodeToggled = (grid, row, col) => {
+//   const newGrid = grid.slice();
+//   const node = newGrid[row][col];
+//   const newNode = {
+//     ...node,
+//     isFinish: true,
+//   };
+//   newGrid[row][col] = newNode;
+//   FINISH_NODE_ROW = row;
+//   FINISH_NODE_COL = col;
+//   return newGrid;
+// };
