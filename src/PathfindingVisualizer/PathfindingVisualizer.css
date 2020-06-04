@@ -1,7 +1,9 @@
 .grid {
   position: absolute;
-  top: 240px;
-  width: 100%;
+  top: 250px;
+  left: 50%;
+  margin-left: -625px;
+  min-width: 1250px;
 }
 
 .header h1 {
@@ -9,14 +11,15 @@
   color: #fff;
   text-align: left;
   padding: 30px;
-  padding-left: 100px;
+  padding-left: 5%;
   margin: 0px;
 }
 
 #viz-btn {
   position: absolute;
   top: 20px;
-  left: 740px;
+  left: 50%;
+  margin-left: -80px;
   border: none;
   border-radius: 5px;
   background: rgba(0, 190, 218, 0.75);
@@ -33,15 +36,16 @@
 #algo-select-label {
   position: absolute;
   top: 22px;
-  left: 483px;
+  left: 27.5%;
   color: #fff;
   font-size: large;
+  padding: 0px 10px;
 }
 
 #algorithm-select {
   position: absolute;
   top: 55px;
-  left: 480px;
+  left: 28%;
   border-style: solid;
   background: rgb(12, 53, 71);
   color: #fff;
@@ -55,11 +59,12 @@
 #clear-btn {
   position: absolute;
   top: 40px;
-  right: 600px;
+  right: 39%;
   border: none;
   background: rgb(12, 53, 71);
   color: #fff;
   font-size: large;
+  padding: 0 10px;
 }
 
 #clear-btn:hover {
@@ -70,69 +75,54 @@
   padding: 10px 180px;
   text-align: left;
   font-size: large;
-  /* display: none; */
+  min-width: 1000px;
 }
 
 #instr-btn {
   position: absolute;
   top: 40px;
-  right: 380px;
+  right: 25%;
   border: none;
   background: rgb(12, 53, 71);
   color: #fff;
   font-size: large;
+  padding: 0 10px;
 }
 
 #instr-btn:hover {
   color: rgb(120, 231, 248);
 }
 
-#dijkstra-desc {
+#algo-desc {
   position: absolute;
   padding: 10px;
   top: 170px;
-  right: 380px;
+  left: 50%;
   text-align: center;
   font-size: large;
+}
+
+#dijkstra-desc {
+  margin-left: -420px;
   display: block;
 }
 
 #dfs-desc {
-  position: absolute;
-  padding: 10px;
-  top: 170px;
-  right: 380px;
-  text-align: center;
-  font-size: large;
+  margin-left: -470px;
   display: none;
 }
 
 #bfs-desc {
-  position: absolute;
-  padding: 10px;
-  top: 170px;
-  right: 380px;
-  text-align: center;
-  font-size: large;
+  margin-left: -450px;
   display: none;
 }
 
 #greedy-bfs-desc {
-  position: absolute;
-  padding: 10px;
-  top: 170px;
-  right: 380px;
-  text-align: center;
-  font-size: large;
+  margin-left: -500px;
   display: none;
 }
 
 #a-star-desc {
-  position: absolute;
-  padding: 10px;
-  top: 170px;
-  right: 380px;
-  text-align: center;
-  font-size: large;
+  margin-left: -370px;
   display: none;
 }
