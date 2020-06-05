@@ -34,12 +34,18 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseDown(row, col) {
+    // if buttons are disabled, don't produce walls either
+    const button = document.getElementById("viz-btn");
+    if (button.disabled === true) {
+      return;
+    }
     const newGrid = createNewGridWithWallToggled(this.state.grid, row, col);
     this.setState({ grid: newGrid, mouseIsPressed: true });
   }
 
   handleMouseEnter(row, col) {
-    if (!this.state.mouseIsPressed) return;
+    const button = document.getElementById("viz-btn");
+    if (!this.state.mouseIsPressed || button.disabled === true) return;
     const newGrid = createNewGridWithWallToggled(this.state.grid, row, col);
     this.setState({ grid: newGrid });
   }
@@ -87,9 +93,15 @@ export default class PathfindingVisualizer extends Component {
   }
 
   animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder) {
+    // disable button input while the algorithm is running
     this.toggleInputs(true);
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
+        // if the start node cannot reach the finish node, enable button input again
+        if (nodesInShortestPathOrder.length === 1) {
+          this.toggleInputs(false);
+          return;
+        }
         setTimeout(() => {
           this.animateShortestPath(nodesInShortestPathOrder);
         }, 10 * i);
@@ -124,12 +136,14 @@ export default class PathfindingVisualizer extends Component {
     const visitedNodesInOrder = dfs(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+    console.log(`visualizing dfs`);
   }
 
   visualizeBFS(grid, startNode, finishNode) {
     const visitedNodesInOrder = bfs(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+    console.log(`visualizing bfs`);
   }
 
   visualizeGreedyBFS(grid, startNode, finishNode) {
@@ -155,6 +169,7 @@ export default class PathfindingVisualizer extends Component {
   }
 
   visualizeAlgorithm() {
+    console.log(`current algo: ${this.state.currentAlgorithm}`);
     this.clearGrid(true);
     const { grid } = this.state;
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
@@ -181,6 +196,7 @@ export default class PathfindingVisualizer extends Component {
   }
 
   changeCurrentAlgo() {
+    console.log(`previous algo: ${this.state.currentAlgorithm}`);
     const algorithmSelect = document.getElementById("algorithm-select");
     const selectedAlgorithm =
       algorithmSelect.options[algorithmSelect.selectedIndex].value;

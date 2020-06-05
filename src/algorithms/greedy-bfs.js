@@ -22,4 +22,5 @@ export default function greedyBfs(grid, startNode, finishNode, heuristic) {
       }
     }
   }
+  return visitedNodesInOrder;
 }

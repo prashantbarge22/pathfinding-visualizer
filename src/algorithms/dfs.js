@@ -18,4 +18,5 @@ export default function dfs(grid, startNode, finishNode) {
       }
     }
   }
+  return visitedNodesInOrder;
 }

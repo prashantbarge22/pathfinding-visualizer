@@ -35,7 +35,7 @@ export default function aStar(grid, startNode, finishNode, heuristic) {
       }
     }
   }
-  return [];
+  return visitedNodesInOrder;
 }
 
 export function aStarGetNeighbors(node, grid) {
