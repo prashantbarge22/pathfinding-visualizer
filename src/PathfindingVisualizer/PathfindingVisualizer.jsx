@@ -136,14 +136,12 @@ export default class PathfindingVisualizer extends Component {
     const visitedNodesInOrder = dfs(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
-    console.log(`visualizing dfs`);
   }
 
   visualizeBFS(grid, startNode, finishNode) {
     const visitedNodesInOrder = bfs(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
-    console.log(`visualizing bfs`);
   }
 
   visualizeGreedyBFS(grid, startNode, finishNode) {
@@ -169,7 +167,6 @@ export default class PathfindingVisualizer extends Component {
   }
 
   visualizeAlgorithm() {
-    console.log(`current algo: ${this.state.currentAlgorithm}`);
     this.clearGrid(true);
     const { grid } = this.state;
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
@@ -196,7 +193,6 @@ export default class PathfindingVisualizer extends Component {
   }
 
   changeCurrentAlgo() {
-    console.log(`previous algo: ${this.state.currentAlgorithm}`);
     const algorithmSelect = document.getElementById("algorithm-select");
     const selectedAlgorithm =
       algorithmSelect.options[algorithmSelect.selectedIndex].value;
