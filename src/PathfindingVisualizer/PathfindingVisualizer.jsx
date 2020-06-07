@@ -72,6 +72,7 @@ export default class PathfindingVisualizer extends Component {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
+        console.log(node);
         if (nodesInShortestPathOrder.length > 1) {
           if (i === 0) {
             document.getElementById(
@@ -87,6 +88,8 @@ export default class PathfindingVisualizer extends Component {
               `node (${node.row},${node.col})`
             ).className = "node node-shortest-path";
           }
+        } else {
+          this.toggleInputs(false);
         }
       }, 30 * i);
     }
@@ -97,11 +100,6 @@ export default class PathfindingVisualizer extends Component {
     this.toggleInputs(true);
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
-        // if the start node cannot reach the finish node, enable button input again
-        if (nodesInShortestPathOrder.length === 1) {
-          this.toggleInputs(false);
-          return;
-        }
         setTimeout(() => {
           this.animateShortestPath(nodesInShortestPathOrder);
         }, 10 * i);

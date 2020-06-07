@@ -6,13 +6,16 @@
   min-width: 1250px;
 }
 
-.header h1 {
+#navbar {
   background: rgb(12, 53, 71);
+  padding: 3px;
+}
+
+.header h1 {
   color: #fff;
   text-align: left;
-  padding: 30px;
+  padding: 10px;
   padding-left: 5%;
-  margin: 0px;
 }
 
 #viz-btn {
@@ -72,6 +75,7 @@
 }
 
 #instructions {
+  position: absolute;
   padding: 10px 180px;
   text-align: left;
   font-size: large;
