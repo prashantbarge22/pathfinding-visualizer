@@ -10,10 +10,10 @@ import getNodesInShortestPathOrder, {
 } from "../algorithms/algorithmUtils";
 import aStar from "../algorithms/a-star";
 
-const START_NODE_ROW = 10;
-const START_NODE_COL = 10;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 40;
+let START_NODE_ROW = 10;
+let START_NODE_COL = 10;
+let FINISH_NODE_ROW = 10;
+let FINISH_NODE_COL = 40;
 
 const GRID_HEIGHT = 20;
 const GRID_WIDTH = 50;
@@ -24,6 +24,7 @@ export default class PathfindingVisualizer extends Component {
     this.state = {
       grid: [],
       mouseIsPressed: false,
+      specialNodePressed: "none",
       currentAlgorithm: "dijkstra", // default
     };
   }
@@ -39,20 +40,78 @@ export default class PathfindingVisualizer extends Component {
     if (button.disabled === true) {
       return;
     }
-    const newGrid = createNewGridWithWallToggled(this.state.grid, row, col);
-    this.setState({ grid: newGrid, mouseIsPressed: true });
+    const node = this.state.grid[row][col];
+    if (node.isStart) {
+      const newGrid = createNewGridWithStartNodeToggled(
+        this.state.grid,
+        row,
+        col
+      );
+      this.setState({
+        grid: newGrid,
+        mouseIsPressed: true,
+        specialNodePressed: "start",
+      });
+    } else if (node.isFinish) {
+      const newGrid = createNewGridWithFinishNodeToggled(
+        this.state.grid,
+        row,
+        col
+      );
+      this.setState({
+        grid: newGrid,
+        mouseIsPressed: true,
+        specialNodePressed: "finish",
+      });
+    } else {
+      const newGrid = createNewGridWithWallToggled(this.state.grid, row, col);
+      this.setState({ grid: newGrid, mouseIsPressed: true });
+    }
   }
 
   handleMouseEnter(row, col) {
     const button = document.getElementById("viz-btn");
     if (!this.state.mouseIsPressed || button.disabled === true) return;
-    const newGrid = createNewGridWithWallToggled(this.state.grid, row, col);
-    this.setState({ grid: newGrid });
+    if (this.state.specialNodePressed === "start") {
+      const newGrid = createNewGridWithStartNodeToggled(
+        this.state.grid,
+        row,
+        col
+      );
+      this.setState({ grid: newGrid });
+    } else if (this.state.specialNodePressed === "finish") {
+      const newGrid = createNewGridWithFinishNodeToggled(
+        this.state.grid,
+        row,
+        col
+      );
+      this.setState({ grid: newGrid });
+    } else {
+      const newGrid = createNewGridWithWallToggled(this.state.grid, row, col);
+      this.setState({ grid: newGrid });
+    }
   }
 
-  handleMouseUp() {
-    this.setState({ mouseIsPressed: false });
+  handleMouseUp(row, col) {
+    if (this.state.specialNodePressed === "start") {
+      const newGrid = createNewGridWithStartNodeToggled(
+        this.state.grid,
+        row,
+        col
+      );
+      this.setState({ grid: newGrid });
+    } else if (this.state.specialNodePressed === "finish") {
+      const newGrid = createNewGridWithFinishNodeToggled(
+        this.state.grid,
+        row,
+        col
+      );
+      this.setState({ grid: newGrid });
+    }
+    this.setState({ mouseIsPressed: false, specialNodePressed: "none" });
   }
+
+  updateStartNode() {}
 
   toggleInputs(disable = false) {
     const navbar = document.getElementById("navbar");
@@ -72,7 +131,7 @@ export default class PathfindingVisualizer extends Component {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
-        console.log(node);
+        // console.log(node);
         if (nodesInShortestPathOrder.length > 1) {
           if (i === 0) {
             document.getElementById(
@@ -300,11 +359,11 @@ export default class PathfindingVisualizer extends Component {
           </button>
         </div>
         <p id="instructions">
-          Instructions: Choose an algorithm. Then, you can draw "walls" on the
-          grid by clicking and slowly dragging your mouse across the grid. Click
-          the button to visualize the algorithm and watch it navigate around
-          your walls to find the shortest path from the start node to the end
-          node.
+          Instructions: Choose an algorithm. You can draw "walls" or change the
+          positions of the start and end nodes by clicking and dragging your
+          mouse across the grid. Click the "Visualize!" button to see the
+          algorithm explore the grid and find a path from the start node to the
+          end node.
         </p>
         <header id="algo-desc">
           <h3 id="dijkstra-desc">
@@ -347,7 +406,7 @@ export default class PathfindingVisualizer extends Component {
                       onMouseEnter={(row, col) =>
                         this.handleMouseEnter(row, col)
                       }
-                      onMouseUp={() => this.handleMouseUp()}
+                      onMouseUp={() => this.handleMouseUp(row, col)}
                     ></Node>
                   );
                 })}
@@ -399,28 +458,37 @@ const createNewGridWithWallToggled = (grid, row, col) => {
   return newGrid;
 };
 
-// const createNewGridWithStartNodeToggled = (grid, row, col) => {
-//   const newGrid = grid.slice();
-//   const node = newGrid[row][col];
-//   const newNode = {
-//     ...node,
-//     isStart: true,
-//   };
-//   newGrid[row][col] = newNode;
-//   START_NODE_ROW = row;
-//   START_NODE_COL = col;
-//   return newGrid;
-// };
+const createNewGridWithStartNodeToggled = (grid, row, col) => {
+  const newGrid = grid.slice();
 
-// const createNewGridWithFinishNodeToggled = (grid, row, col) => {
-//   const newGrid = grid.slice();
-//   const node = newGrid[row][col];
-//   const newNode = {
-//     ...node,
-//     isFinish: true,
-//   };
-//   newGrid[row][col] = newNode;
-//   FINISH_NODE_ROW = row;
-//   FINISH_NODE_COL = col;
-//   return newGrid;
-// };
+  const oldStartNode = newGrid[START_NODE_ROW][START_NODE_COL];
+  oldStartNode.isStart = false;
+
+  START_NODE_ROW = row;
+  START_NODE_COL = col;
+  const node = newGrid[row][col];
+  const newNode = {
+    ...node,
+    isStart: true,
+  };
+  newGrid[row][col] = newNode;
+
+  return newGrid;
+};
+
+const createNewGridWithFinishNodeToggled = (grid, row, col) => {
+  const newGrid = grid.slice();
+
+  const oldFinishNode = newGrid[FINISH_NODE_ROW][FINISH_NODE_COL];
+  oldFinishNode.isFinish = false;
+
+  const node = newGrid[row][col];
+  const newNode = {
+    ...node,
+    isFinish: true,
+  };
+  newGrid[row][col] = newNode;
+  FINISH_NODE_ROW = row;
+  FINISH_NODE_COL = col;
+  return newGrid;
+};
