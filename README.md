@@ -3,6 +3,7 @@
 A visualizer for pathfinding algorithms. Inspired by Clement Mihailescu.
 
 Demo:
+
 ![](a-star-demo.gif)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
