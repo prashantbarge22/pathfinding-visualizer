@@ -306,15 +306,6 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  toggleInstructions() {
-    const instr = document.getElementById("instructions");
-    if (instr.style.display === "none") {
-      instr.style.display = "block";
-    } else {
-      instr.style.display = "none";
-    }
-  }
-
   showAlgoDescription() {
     const { currentAlgorithm } = this.state;
     const allDescs = document.getElementById("algo-desc");
@@ -327,6 +318,10 @@ export default class PathfindingVisualizer extends Component {
         i.style.display = "none";
       }
     }
+  }
+
+  githubLink() {
+    window.open("https://github.com/vincent-ngo31/pathfinding-visualizer");
   }
 
   render() {
@@ -356,8 +351,8 @@ export default class PathfindingVisualizer extends Component {
           <button id="clear-btn" onClick={() => this.clearGrid()}>
             Clear Grid
           </button>
-          <button id="instr-btn" onClick={() => this.toggleInstructions()}>
-            Show/Hide Instructions
+          <button id="src-btn" onClick={() => this.githubLink()}>
+            Source Code
           </button>
         </div>
         <p id="instructions">

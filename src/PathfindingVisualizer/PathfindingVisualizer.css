@@ -85,7 +85,7 @@
   color: rgb(120, 231, 248);
 }
 
-#instr-btn {
+#src-btn {
   position: absolute;
   top: 40px;
   left: 65%;
@@ -96,7 +96,7 @@
   padding: 0 10px;
 }
 
-#instr-btn:hover {
+#src-btn:hover {
   color: rgb(120, 231, 248);
 }
 
