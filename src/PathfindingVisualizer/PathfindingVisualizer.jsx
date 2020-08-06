@@ -332,22 +332,24 @@ export default class PathfindingVisualizer extends Component {
   render() {
     const { grid, mouseIsPressed } = this.state;
     return (
-      <>
+      <div id="page">
         <div id="navbar">
           <header className="header">
             <h1>Pathfinding Visualizer</h1>
           </header>
-          <label id="algo-select-label">Choose an algorithm:</label>
-          <select
-            id="algorithm-select"
-            onChange={() => this.changeCurrentAlgo()}
-          >
-            <option value="dijkstra">Dijkstra's Algorithm</option>
-            <option value="dfs">Depth-first Search</option>
-            <option value="bfs">Breadth-first Search</option>
-            <option value="greedy-bfs">Greedy Best-first Search</option>
-            <option value="a-star">A* Search</option>
-          </select>
+          <div id="algo-select-package">
+            <label id="algo-select-label">Choose an algorithm:</label>
+            <select
+              id="algorithm-select"
+              onChange={() => this.changeCurrentAlgo()}
+            >
+              <option value="dijkstra">Dijkstra's Algorithm</option>
+              <option value="dfs">Depth-first Search</option>
+              <option value="bfs">Breadth-first Search</option>
+              <option value="greedy-bfs">Greedy Best-first Search</option>
+              <option value="a-star">A* Search</option>
+            </select>
+          </div>
           <button id="viz-btn" onClick={() => this.visualizeAlgorithm()}>
             Visualize!
           </button>
@@ -387,7 +389,7 @@ export default class PathfindingVisualizer extends Component {
             shortest path!
           </h3>
         </header>
-        <div className="grid">
+        <div id="grid">
           {grid.map((row, rowIdx) => {
             return (
               <div key={rowIdx} className="row">
@@ -414,7 +416,7 @@ export default class PathfindingVisualizer extends Component {
             );
           })}
         </div>
-      </>
+      </div>
     );
   }
 }
