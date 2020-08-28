@@ -6,7 +6,7 @@ Demo:
 
 ![](a-star-demo.gif)
 
-Try it out yourself at https://vincent-ngo31.github.io/pathfinding-visualizer/
+Try it out yourself at https://pathfinding-visualizer-vn.github.io/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
